@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Footalytics | Futbol Tahmin & Analiz</title>
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --dark: #020617;
+      --light: #f8fafc;
+      --card: #ffffff;
+      --success: #16a34a;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: #0f172a;
+    }
+    header {
+      background: linear-gradient(135deg, var(--dark), #0f172a);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    header .logo {
+      font-size: 34px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    header .logo span {
+      color: var(--primary);
+    }
+    nav {
+      background: var(--dark);
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      padding: 12px;
+    }
+    nav a {
+      color: #e5e7eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: var(--primary);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+    .matches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .match {
+      border-left: 5px solid var(--primary);
+      position: relative;
+    }
+    .confidence {
+      font-weight: bold;
+      color: var(--success);
+    }
+    .badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: bold;
+    }
+    input, select, button {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #cbd5f5;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    footer {
+      background: var(--dark);
+      color: #cbd5f5;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const PASSWORD = "footalytics123";
+  const entered = prompt("Admin girişi - Şifre giriniz:");
+  if (entered !== PASSWORD) {
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:100px;'>❌ Yetkisiz Giriş</h2>";
+  }
+</script>
+
+<header>
+  <div class="logo">Foot<span>alytics</span></div>
+  <p>Futbol Tahminleri & İstatistiksel Analiz</p>
+</header>
+
+<nav>
+  <a href="#">Tahminler</a>
+  <a href="#">Analiz</a>
+  <a href="#">İstatistik</a>
+</nav>
+
+<div class="container">
+
+  <div class="card">
+    <h2>➕ Maç Ekle (Admin)</h2>
+    <input id="league" placeholder="Lig" />
+    <input id="match" placeholder="Maç (Takım vs Takım)" />
+    <select id="prediction">
+      <option>MS 1</option>
+      <option>MS 2</option>
+      <option>2.5 ÜST</option>
+      <option>2.5 ALT</option>
+      <option>KG VAR</option>
+      <option>KG YOK</option>
+    </select>
+    <input id="confidence" type="number" placeholder="Güven %" />
+    <button onclick="addMatch()">Maçı Ekle</button>
+  </div>
+
+  <div class="card">
+    <h2>🔥 Günün Tahminleri</h2>
+    <div class="matches" id="matches"></div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Footalytics | Futbol Tahmin & Analiz Platformu
+</footer>
+
+<script>
+  function addMatch() {
+    const league = document.getElementById('league').value;
+    const match = document.getElementById('match').value;
+    const prediction = document.getElementById('prediction').value;
+    const confidence = document.getElementById('confidence').value;
+
+    if (!league || !match || !confidence) return alert('Tüm alanları doldur');
+
+    const div = document.createElement('div');
+    div.className = 'card match';
+    div.innerHTML = `
+      <span class="remove" onclick="this.parentElement.remove()">✖</span>
+      <span class="badge">${league}</span>
+      <h3>${match}</h3>
+      <p>Tahmin: <strong>${prediction}</strong></p>
+      <p>Güven Oranı: <span class="confidence">%${confidence}</span></p>
+    `;
+
+    document.getElementById('matches').prepend(div);
+
+    document.getElementById('league').value = '';
+    document.getElementById('match').value = '';
+    document.getElementById('confidence').value = '';
+  }
+</script>
+
+</body>
+</html>
